@@ -5,7 +5,7 @@ html,body{height:100%;overflow:hidden}body{font-family:Arial,sans-serif;backgrou
 <h2>Quiz Brevet Sciences</h2>
 <p>Entre tes informations :</p>
 <input id="nomEleve" placeholder="Nom ou pseudo"><br><br>
-<input id="classeEleve" placeholder="Classe (ex : 3A)"><br><br>
+<input id="classeEleve" placeholder="Classe (ex : 3PM1)"><br><br>
 <button onclick="startQuiz()">Commencer</button>
 </div>
 <div class="quiz"><div class="score" id="scoreBox">Score : 0 / 0</div><div id="app"></div></div><script>
@@ -23,15 +23,28 @@ let nom = "";
 let classe = "";
 
 function startQuiz() {
- nom = document.getElementById("nomEleve").value;
- classe = document.getElementById("classeEleve").value;
- if (!nom || !classe) {alert("Merci de remplir nom et classe !");return;}
- document.getElementById("startScreen").style.display = "none";
- load();
+    nom = document.getElementById("nomEleve").value;
+    classe = document.getElementById("classeEleve").value;
+    if (!nom || !classe) {
+        alert("Merci de remplir nom et classe !");
+        return;
+    }
+    document.getElementById("startScreen").style.display = "none";
+    load();
 }
 
 function firework(){const c=document.createElement("canvas");c.width=innerWidth;c.height=innerHeight;c.style.position="fixed";c.style.top=0;c.style.left=0;c.style.pointerEvents="none";document.body.appendChild(c);const x=c.getContext("2d");let p=[];for(let i=0;i<150;i++){p.push({x:c.width/2,y:c.height/2,a:Math.random()*6.28,s:Math.random()*5+2,l:100});}
 function a(){x.clearRect(0,0,c.width,c.height);p.forEach(o=>{o.x+=Math.cos(o.a)*o.s;o.y+=Math.sin(o.a)*o.s;o.l--;x.fillStyle=`hsl(${Math.random()*360},100%,50%)`;x.beginPath();x.arc(o.x,o.y,3,0,6.28);x.fill();});if(p[0].l>0)requestAnimationFrame(a);else c.remove();}
 a();}
 
-</script></body></html>
+</script>
+<script>
+function sendScore(){
+fetch("REMPLACE_PAR_TON_URL", {
+method:"POST",
+body: JSON.stringify({nom:nom,classe:classe,score:score,total:TOTAL})
+});
+if(score===TOTAL){firework();}}
+</script>
+</body>
+</html>
